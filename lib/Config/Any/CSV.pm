@@ -41,11 +41,11 @@ sub extensions {
 
 =head1 SYNOPSIS
 
-The interface of Config::Any sucks, so this example uses Config::JFDI:
+The interface of Config::Any sucks, so this example uses Config::ZOMG:
 
-    use Config::JFDI;
+    use Config::ZOMG;
 
-    my $config = Config::JFDI->new( 
+    my $config = Config::ZOMG->new( 
         path => '/path/that/includes/foo.csv', # and/or foo_local.csv
         name => 'foo'
     );
@@ -82,6 +82,6 @@ ignored.
 
 =head1 SEE ALSO
 
-L<Config::JFDI>
+L<Config::ZOMG>
 
 =cut
