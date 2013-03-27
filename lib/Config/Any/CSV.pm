@@ -12,8 +12,10 @@ use Text::CSV;
 sub load {
     my ($class, $file, $driver) = @_;
 
+    my $with_key = 0;
     my $args = { binary => 1, allow_whitespace => 1 };
     if ($driver) {
+        $with_key = delete $driver->{with_key};
         $args->{$_} = $driver->{$_} for keys %$driver;
     }
     my $csv = Text::CSV->new( $args );
@@ -27,10 +29,12 @@ sub load {
         my $columns = scalar @$names - 1;
         while ( my $row = $csv->getline( $fh ) ) {
             next if @$row == 1 and $row->[0] eq ''; # empty line
-            $config->{ $row->[0] // "" } = {
+            my $id = $row->[0] // "";
+            $config->{ $id } = {
                 map { ( $names->[$_] // "" ) => ( $row->[$_] // $default ) }
                 (1..$columns)
             };
+            $config->{ $id }->{ $names->[0] // "" } = $id if $with_key;
         }
     }
     die $csv->error_diag() unless $csv->eof;
@@ -60,8 +64,20 @@ I recommend to use L<Config::ZOMG>:
 
     # load foo.csv (and possible foo_local.csv)
     my $config = Config::ZOMG->new( 
-        path => '/path/to/config'
+        path => '/path/to/config',
         name => 'foo'
+    );
+
+    # load with CSV options
+    my $config = Config::ZOMG->new( 
+        path => '/path/to/config',
+        name => 'foo',
+        drivers => {
+            CSV => { 
+                sep_char => ';', 
+                with_key => 1,
+            } 
+        }
     );
 
 =head1 DESCRIPTION
@@ -90,6 +106,22 @@ Is parsed into this Perl structure:
             mail => 'bob@example.org'
         }
     }
+
+The driver option C<with_key> adds key field to each row:
+
+    {
+        alice => {
+            name => 'alice',
+            age  => '42',
+            mail => 'alice@example.org',
+        },
+         bob => {
+            name => 'bob',
+            age => '23',
+            mail => 'bob@example.org'
+        }
+    }
+
 
 The name of the first field is irrelevant and the order of rows gets lost. If a
 file contains multiple rows with the same first field value, only the last of
