@@ -1,5 +1,6 @@
 use strict;
 use warnings;
+use utf8;
 
 use Test::More;
 use Test::Deep;
@@ -56,6 +57,5 @@ cmp_deeply( $cfg, [{
         },
     },
 }], "read $file with driver_args" );
-
 
 done_testing;

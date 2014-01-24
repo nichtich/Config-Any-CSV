@@ -1,12 +1,11 @@
-package Config::Any::CSV;
-#ABSTRACT: Load CSV as config files
-
 use strict;
 use warnings;
+package Config::Any::CSV;
+#ABSTRACT: Load CSV as config files
+#VERSION
+
 use v5.10;
-
 use base 'Config::Any::Base';
-
 use Text::CSV;
 
 sub load {
@@ -55,7 +54,7 @@ sub extensions {
  
     my $config = Config::Any->load_files({files => \@files});
 
-I recommend to use L<Config::ZOMG>:
+I recommend to use L<Config::ZOMG> for a nicer interface to Config::Any:
 
     use Config::ZOMG;
 
