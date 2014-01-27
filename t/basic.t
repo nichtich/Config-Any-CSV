@@ -1,36 +1,21 @@
 use strict;
 use warnings;
-use utf8;
 
 use Test::More;
-use Test::Deep;
-
 use Config::Any;
 
-my $file = 't/example.csv';
-my $cfg = Config::Any->load_files( { 
-    files => [ $file ], use_ext => 1 
+my $config = Config::Any->load_stems( { 
+    stems => [ 't/example/example' ], use_ext => 1 
 } );
 
-cmp_deeply( $cfg, [{
-    $file => { 
-        'Älice' => {
-            age  => '42',
-            comment => "friend",
-            mail => 'alice@example.org',
-            foo => 'bar',
-        },
-        'Böb' => {
-            age => '23',
-            comment => "",
-            mail => 'bob@example.org',
-            foo  => "",
-        }
-    }
-}], "read $file" );
+# note explain $config;
 
-$file = 't/args.csv';
-$cfg = Config::Any->load_files( {
+is_deeply
+    $config->[0]->{'t/example.csv'},
+    $config->[0]->{'t/example.json'};
+
+my $file = 't/args.csv';
+my $csv = Config::Any->load_files( {
     files => [ $file ], 
     use_ext => 1, 
     driver_args => { 
@@ -43,7 +28,7 @@ $cfg = Config::Any->load_files( {
     }
 } );
 
-cmp_deeply( $cfg, [{
+is_deeply( $csv, [{
     $file => { 
         42 => {
             id => 42,
