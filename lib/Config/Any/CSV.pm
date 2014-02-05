@@ -50,34 +50,37 @@ sub extensions {
 
 =head1 SYNOPSIS
 
+    # use directly
+    use Config::Any::CSV;
+    my $config_hash = Config::Any::CSV->load($csv_file);
+    
+    # use implicitly, if .csv file is found
     use Config::Any;
- 
-    my $config = Config::Any->load_files({files => \@files});
+    my $config = Config::Any->load_stems({ stems => \@file_stems });
 
-I recommend to use L<Config::ZOMG> for a nicer interface to Config::Any:
-
+    # use via Config::ZOMG    
     use Config::ZOMG;
 
-    # just load a single file
-    my $config_hash = Config::ZOMG->open( $csv_file );
+      # just load a single file
+      my $config_hash = Config::ZOMG->open( $csv_file );
 
-    # load foo.csv (and possible foo_local.csv)
-    my $config = Config::ZOMG->new( 
-        path => '/path/to/config',
-        name => 'foo'
-    );
+      # load foo.csv (and possible foo_local.csv)
+      my $config = Config::ZOMG->new( 
+          path => '/path/to/config',
+          name => 'foo'
+      );
 
-    # load with CSV options
-    my $config = Config::ZOMG->new( 
+      # load with CSV options
+      my $config = Config::ZOMG->new( 
         path => '/path/to/config',
         name => 'foo',
         drivers => {
-            CSV => { 
-                sep_char => ';', 
-                with_key => 1,
-            } 
+          CSV => { 
+            sep_char => ';', 
+            with_key => 1,
+          } 
         }
-    );
+      );
 
 =head1 DESCRIPTION
 
