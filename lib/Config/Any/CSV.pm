@@ -4,7 +4,7 @@ package Config::Any::CSV;
 #ABSTRACT: Load CSV as config files
 #VERSION
 
-use v5.10;
+use 5.010;
 use base 'Config::Any::Base';
 use Text::CSV;
 
